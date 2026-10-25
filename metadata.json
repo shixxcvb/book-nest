@@ -1,0 +1,6 @@
+{
+  "name": "BookNest - Independent Editorial Bookstore",
+  "description": "A cozy, artisanal digital bookstore. Browse timeless classics, Philippine literature, and curated editions with complimentary nationwide delivery and sample excerpts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

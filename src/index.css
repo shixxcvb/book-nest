@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #FFF9F1;
+  --color-warm-white: #FFFEFB;
+  --color-terracotta: #C9785B;
+  --color-terracotta-hover: #B5674B;
+  --color-peach: #F4D5C5;
+  --color-peach-light: #FDF3EC;
+  --color-dark-brown: #3A2A25;
+  --color-brown-muted: #6B564E;
+  --color-brown-subtle: #988277;
+  --color-brown-border: #EADBCE;
+  --color-sage: #A9B79F;
+  --color-sage-dark: #647558;
+  --color-sage-light: #EBF0E7;
+
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-dark-brown);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+}
+
+/* Tactile book spine shadow and paper-like subtle warmth */
+.book-shadow {
+  box-shadow: 
+    -4px 6px 12px -2px rgba(58, 42, 37, 0.12),
+    0 12px 24px -4px rgba(58, 42, 37, 0.14),
+    inset -1px 0 0 rgba(255, 255, 255, 0.25),
+    inset 4px 0 6px rgba(0, 0, 0, 0.08);
+}
+
+.book-shadow-hover {
+  box-shadow: 
+    -8px 14px 24px -4px rgba(58, 42, 37, 0.20),
+    0 20px 32px -6px rgba(58, 42, 37, 0.18),
+    inset -1px 0 0 rgba(255, 255, 255, 0.35),
+    inset 5px 0 8px rgba(0, 0, 0, 0.10);
+}
+
+.paper-card {
+  background-color: var(--color-warm-white);
+  border: 1px solid var(--color-brown-border);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9F1;
+}
+::-webkit-scrollbar-thumb {
+  background: #EADBCE;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C9785B;
+}

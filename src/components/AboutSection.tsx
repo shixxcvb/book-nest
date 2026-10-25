@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BookOpen, Sparkles, Feather, ShieldCheck, ArrowRight, HelpCircle } from 'lucide-react';
 import { useBookstore } from '../context/BookstoreContext';
 
@@ -8,6 +8,7 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreShelves }) => {
   const { setIsStoreInfoModalOpen } = useBookstore();
+  const [imageError, setImageError] = useState(false);
 
   const handleExplore = () => {
     if (onExploreShelves) {
@@ -24,15 +25,31 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreShelves }) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Visual Atmosphere */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden border border-[#EADBCE] shadow-lg group">
-              <img
-                src="/src/assets/images/reading_nook_ambiance_1792811366288.jpg"
-                alt="Cozy reading nook with books, brass lamp and armchair"
-                className="w-full h-80 sm:h-96 object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
+            <div className="relative rounded-2xl overflow-hidden border border-[#EADBCE] shadow-lg bg-[#2B1E1A] group">
+              {!imageError ? (
+                <picture className="block w-full h-80 sm:h-96">
+                  <source srcSet="/images/reading-nook.webp" type="image/webp" />
+                  <img
+                    src="/images/reading-nook.jpg"
+                    alt="Cozy reading nook with books, brass lamp and armchair"
+                    className="w-full h-80 sm:h-96 object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    onError={() => setImageError(true)}
+                  />
+                </picture>
+              ) : (
+                /* Fallback atmosphere container */
+                <div className="w-full h-80 sm:h-96 bg-gradient-to-br from-[#3A2A25] via-[#523A33] to-[#2B1E1A] flex flex-col justify-center items-center p-8 text-center text-[#FFF9F1]">
+                  <div className="w-16 h-16 rounded-2xl bg-[#C9785B]/20 border border-[#C9785B]/40 flex items-center justify-center mb-4 text-[#F4D5C5]">
+                    <Feather className="w-8 h-8" />
+                  </div>
+                  <h4 className="font-serif text-xl font-bold mb-1">Quiet Reading Nook</h4>
+                  <p className="text-xs text-[#F4D5C5]/80 max-w-xs">A peaceful sanctuary for slow readers</p>
+                </div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-4 left-4 right-4 text-white z-10 pointer-events-none">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#F4D5C5]">
                   Our Philosophy
                 </span>
@@ -44,7 +61,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreShelves }) 
             </div>
 
             {/* Overlapping small badge */}
-            <div className="absolute -bottom-5 -right-3 bg-[#FFF9F1] border border-[#EADBCE] rounded-xl p-3 shadow-md hidden sm:flex items-center gap-2.5">
+            <div className="absolute -bottom-5 -right-3 bg-[#FFF9F1] border border-[#EADBCE] rounded-xl p-3 shadow-md hidden sm:flex items-center gap-2.5 z-20">
               <div className="w-8 h-8 rounded-lg bg-[#C9785B] text-white flex items-center justify-center">
                 <BookOpen className="w-4 h-4" />
               </div>
@@ -95,7 +112,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreShelves }) 
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <button
                 onClick={handleExplore}
-                className="px-5 py-2.5 bg-[#3A2A25] text-white text-xs font-medium rounded-lg hover:bg-[#523A33] transition-colors flex items-center gap-2 shadow-sm active:scale-95"
+                className="px-5 py-2.5 bg-[#3A2A25] text-white text-xs font-medium rounded-lg hover:bg-[#523A33] transition-colors flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
               >
                 <span>Browse All Collections</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -103,7 +120,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onExploreShelves }) 
 
               <button
                 onClick={() => setIsStoreInfoModalOpen(true)}
-                className="px-5 py-2.5 bg-[#FFFEFB] border border-[#EADBCE] text-[#3A2A25] text-xs font-medium rounded-lg hover:bg-[#FFF9F1] hover:border-[#C9785B] transition-colors flex items-center gap-2 active:scale-95"
+                className="px-5 py-2.5 bg-[#FFFEFB] border border-[#EADBCE] text-[#3A2A25] text-xs font-medium rounded-lg hover:bg-[#FFF9F1] hover:border-[#C9785B] transition-colors flex items-center gap-2 active:scale-95 cursor-pointer"
               >
                 <HelpCircle className="w-3.5 h-3.5 text-[#C9785B]" />
                 <span>Store Information & Shipping FAQ</span>

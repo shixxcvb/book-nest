@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowRight, Compass, Bookmark, ShieldCheck, Sparkles, Feather } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Compass, Bookmark, ShieldCheck, Sparkles, Feather, BookOpen } from 'lucide-react';
 import { BOOKS_DATA } from '../data/books';
 import { BookCover } from './BookCover';
 import { formatPHP } from '../utils/formatters';
@@ -12,6 +12,8 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }) => {
   const { setSelectedBook, addToCart } = useBookstore();
+  const [imageError, setImageError] = useState(false);
+
   // Hero spotlight book: Noli Me Tángere
   const spotlightBook = BOOKS_DATA.find((b) => b.id === 'noli-me-tangere') || BOOKS_DATA[0];
 
@@ -42,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <button
                 onClick={onExploreClick}
-                className="px-6 py-3.5 bg-[#C9785B] text-white font-medium text-sm rounded-lg hover:bg-[#B5674B] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 group active:scale-95"
+                className="px-6 py-3.5 bg-[#C9785B] text-white font-medium text-sm rounded-lg hover:bg-[#B5674B] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 group active:scale-95 cursor-pointer"
               >
                 <span>Explore Books</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -50,7 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }
 
               <button
                 onClick={onRecommendedClick}
-                className="px-6 py-3.5 bg-[#FFFEFB] border border-[#EADBCE] text-[#3A2A25] font-medium text-sm rounded-lg hover:bg-[#FFF9F1] hover:border-[#C9785B]/60 transition-all duration-200 flex items-center gap-2 active:scale-95"
+                className="px-6 py-3.5 bg-[#FFFEFB] border border-[#EADBCE] text-[#3A2A25] font-medium text-sm rounded-lg hover:bg-[#FFF9F1] hover:border-[#C9785B]/60 transition-all duration-200 flex items-center gap-2 active:scale-95 cursor-pointer"
               >
                 <Compass className="w-4 h-4 text-[#C9785B]" />
                 <span>Curator’s Recommendations</span>
@@ -94,16 +96,32 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }
           {/* Right Column: Hero Visual Atmosphere & Floating Interactive Showcase */}
           <div className="lg:col-span-5 relative flex justify-center items-center">
             {/* Visual Photography Backplate */}
-            <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-[#EADBCE] shadow-xl bg-[#FFF9F1] group">
-              <img
-                src="/src/assets/images/hero_bookstore_corner_1792811365797.jpg"
-                alt="Sunlit corner of an artisanal editorial bookstore with oak shelving and open art book"
-                className="w-full h-80 sm:h-96 object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-[#EADBCE] shadow-xl bg-[#2B1E1A] group">
+              {!imageError ? (
+                <picture className="block w-full h-80 sm:h-96">
+                  <source srcSet="/images/hero-bookstore.webp" type="image/webp" />
+                  <img
+                    src="/images/hero-bookstore.jpg"
+                    alt="Sunlit corner of an artisanal editorial bookstore with oak shelving and open art book"
+                    className="w-full h-80 sm:h-96 object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="eager"
+                    onError={() => setImageError(true)}
+                  />
+                </picture>
+              ) : (
+                /* Fallback atmosphere container */
+                <div className="w-full h-80 sm:h-96 bg-gradient-to-br from-[#3A2A25] via-[#523A33] to-[#2B1E1A] flex flex-col justify-center items-center p-8 text-center text-[#FFF9F1]">
+                  <div className="w-16 h-16 rounded-2xl bg-[#C9785B]/20 border border-[#C9785B]/40 flex items-center justify-center mb-4 text-[#F4D5C5]">
+                    <BookOpen className="w-8 h-8" />
+                  </div>
+                  <h4 className="font-serif text-xl font-bold mb-1">BookNest Literary Haven</h4>
+                  <p className="text-xs text-[#F4D5C5]/80 max-w-xs">Curated rare editions & classic reading salon</p>
+                </div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent pointer-events-none" />
               
-              <div className="absolute bottom-4 left-4 right-4 text-white">
+              <div className="absolute bottom-4 left-4 right-4 text-white z-10 pointer-events-none">
                 <span className="text-[11px] font-mono uppercase tracking-widest text-[#F4D5C5] block mb-1">
                   Bookstore Atmosphere
                 </span>
@@ -115,7 +133,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }
             </div>
 
             {/* Overlapping Floating Featured Book Card */}
-            <div className="absolute -bottom-8 -left-2 sm:-left-6 bg-[#FFFEFB] border border-[#EADBCE] rounded-xl p-3.5 shadow-2xl max-w-xs transition-transform hover:-translate-y-1">
+            <div className="absolute -bottom-8 -left-2 sm:-left-6 bg-[#FFFEFB] border border-[#EADBCE] rounded-xl p-3.5 shadow-2xl max-w-xs transition-transform hover:-translate-y-1 z-20">
               <div className="flex items-center gap-3">
                 <div
                   className="cursor-pointer"
@@ -143,7 +161,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onRecommendedClick }
                     </span>
                     <button
                       onClick={() => addToCart(spotlightBook, 1)}
-                      className="px-2.5 py-1 text-[11px] bg-[#C9785B] text-white rounded hover:bg-[#B5674B] transition-colors font-medium"
+                      className="px-2.5 py-1 text-[11px] bg-[#C9785B] text-white rounded hover:bg-[#B5674B] transition-colors font-medium cursor-pointer"
                     >
                       + Add
                     </button>
